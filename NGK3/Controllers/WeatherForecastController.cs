@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using WebApi.Context;
 using WebApi.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApi.Controllers
 {
@@ -23,26 +24,24 @@ namespace WebApi.Controllers
             _context = context;
             _logger = logger;
         }
-
+        [Authorize]
         [HttpPost("weatherreading")]
-        public async Task<HttpStatusCode> WeatherReading(WeatherReading reading)
+        public async Task<HttpStatusCode> WeatherReading([FromBody] WeatherReading reading)
         {
-            var place = reading.Place;
-            
-            var dbPlace = _context.Place.FirstOrDefault(p => p.Name == place.Name);
-
-            if (dbPlace == null)
-            {
-                await _context.Place.AddAsync(place);
-                await _context.SaveChangesAsync();
-                dbPlace = await _context.Place.FirstOrDefaultAsync(w => w.Lat == place.Lat && w.Long == place.Long);
-            }
-
-            reading.Place = null;
-            reading.PlaceId = dbPlace.Id;
-            await _context.WeatherReading.AddAsync(reading);
             try
             {
+                var dbPlace = _context.Place.Where(p => p.Name == reading.Place.Name).FirstOrDefault();
+
+                if (dbPlace == null)
+                {
+                    await _context.Place.AddAsync(reading.Place);
+                    await _context.SaveChangesAsync();
+                    dbPlace = await _context.Place.FirstOrDefaultAsync(w => w.Lat == reading.Place.Lat && w.Long == reading.Place.Long);
+                }
+
+                reading.Place = dbPlace;
+                await _context.WeatherReading.AddAsync(reading);
+
                 await _context.SaveChangesAsync();
                 return HttpStatusCode.Accepted;
             }
@@ -58,16 +57,16 @@ namespace WebApi.Controllers
             return await _context.WeatherReading.OrderByDescending(w => w.Date).Take(3).ToListAsync();
         }
 
-        [HttpGet("weatherreadingbydate")]
-        public async Task<IEnumerable<WeatherReading>> WeatherReadingByDate(DateTime date)
+        [HttpGet("weatherreading/{date}")]
+        public async Task<IEnumerable<WeatherReading>> WeatherReadingByDate([FromRoute] DateTime date)
         {
-            return await _context.WeatherReading.Where(w => w.Date == date).ToListAsync();
+            return await _context.WeatherReading.Where(w => w.Date.Date == date.Date).OrderBy(w => w.Date).ToListAsync();
         }
 
-        [HttpGet("weatherreadingstartenddate")]
-        public async Task<IEnumerable<WeatherReading>> WeatherReadingStartEndDate(DateTime startDate, DateTime endDate)
+        [HttpGet("weatherreading/{startDate}/{endDate}")]
+        public async Task<IEnumerable<WeatherReading>> WeatherReadingStartEndDate([FromRoute] DateTime startDate, [FromRoute] DateTime endDate)
         {
-            return await _context.WeatherReading.Where(w => w.Date >= startDate && w.Date <= endDate)
+            return await _context.WeatherReading.Where(w => w.Date >= startDate && w.Date <= endDate).OrderBy(w => w.Date)
                 .ToListAsync();
         }
     }

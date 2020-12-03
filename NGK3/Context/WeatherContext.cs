@@ -6,8 +6,8 @@ namespace WebApi.Context
     public class WeatherContext : DbContext
     {
 
-        public DbSet<Place> Place;
-        public DbSet<WeatherReading> WeatherReading;
+        public DbSet<Place> Place { get; set; }
+        public DbSet<WeatherReading> WeatherReading { get; set; }
         public DbSet<WebApi.Models.User> User { get; set; }
         public WeatherContext()
         {
