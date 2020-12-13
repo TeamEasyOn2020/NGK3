@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using NGK3.Models;
 using WebApi.Context;
-using WebApi.Models;
 
 namespace NGK3.Controllers
 {

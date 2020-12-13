@@ -12,8 +12,8 @@ using WebApi.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using NGK3.Models;
 using WebApi;
-using WebApi.Models;
 using static BCrypt.Net.BCrypt;
 using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 

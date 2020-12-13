@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using WebApi.Models;
+using NGK3.Models;
 
 namespace WebApi.Context
 {
@@ -8,7 +8,7 @@ namespace WebApi.Context
 
         public DbSet<Place> Place { get; set; }
         public DbSet<WeatherReading> WeatherReading { get; set; }
-        public DbSet<WebApi.Models.User> User { get; set; }
+        public DbSet<User> User { get; set; }
         public WeatherContext()
         {
             
