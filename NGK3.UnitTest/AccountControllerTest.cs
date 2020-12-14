@@ -1,13 +1,8 @@
 ﻿using Microsoft.Extensions.Options;
-using Moq;
 using NGK3.Controllers;
 using NGK3.Models;
 using NSubstitute;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Text;
 using WebApi;
 using WebApi.Context;
 
@@ -21,7 +16,7 @@ namespace NGK3.UnitTest
         AccountController uut;
 
         [SetUp]
-        void Setup()
+        public void Setup()
         {
             DbContext = Substitute.For<WeatherContext>();
             appSettings = new AppSettings();
@@ -29,7 +24,7 @@ namespace NGK3.UnitTest
         }
 
         [Test]
-        void register_regUser()
+        public void register_regUser()
         {
             // Arrange
             UserDto user = new UserDto
