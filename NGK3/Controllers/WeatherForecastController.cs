@@ -80,7 +80,7 @@ namespace NGK3.Controllers
         [HttpGet("weatherreading/{startDate}/{endDate}")]
         public async Task<IEnumerable<WeatherReadingDto>> WeatherReadingStartEndDate([FromRoute] DateTime startDate, [FromRoute] DateTime endDate)
         {
-           var readings = await _context.WeatherReading.Where(w => w.Date.Date >= startDate.Date && w.Date.Date <= endDate.Date).Include(w => w.Place).OrderBy(w => w.Date).ToListAsync();
+           var readings = await _context.WeatherReading.Where(w => DateTime.Compare(w.Date,startDate) >=  0 && DateTime.Compare(w.Date,endDate) <= 0).Include(w => w.Place).OrderBy(w => w.Date).ToListAsync();
             return readings.Select(weatherReading => new WeatherReadingDto(weatherReading)).ToList();
         }
 
