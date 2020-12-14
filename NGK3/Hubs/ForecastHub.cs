@@ -8,6 +8,7 @@ namespace NGK3.Hubs
     
     public class ForecastHub : Hub
     {
+        public ForecastHub(){}
         [HubMethodName("newForecast")]
         public async Task SendMessage(WeatherReading reading)
         {

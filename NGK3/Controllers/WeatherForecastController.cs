@@ -22,15 +22,14 @@ namespace NGK3.Controllers
     public class WeatherForecastController : ControllerBase
     {
         private readonly WeatherContext _context;
-        private readonly ILogger<WeatherForecastController> _logger;
         private readonly IHubContext<ForecastHub> _hub;
 
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger, WeatherContext context, IHubContext<ForecastHub> hub)
+        public WeatherForecastController( WeatherContext context, IHubContext<ForecastHub> hub)
         {
             _context = context;
             _hub = hub;
-            _logger = logger;
+
         }
         [Authorize]
         [HttpPost("weatherreading")]
